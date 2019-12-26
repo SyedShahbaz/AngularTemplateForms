@@ -57,9 +57,9 @@
         <div class="form-group">
             <label for="subscriptionType">Subscription Type</label>
             <select class="form-control" id="subscriptionType" name = "subscriptionType" [(ngModel)]="userSettings.subscriptionType">
-              <option>Monthly</option>
-              <option>Annual</option>
-              <option>Lifetime</option>
+              <option *ngFor="let type of subscriptionTypes | async ">
+                  {{ type }}
+              </option>
             </select>
         </div>
        
@@ -71,6 +71,11 @@
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id='password' name='password' class="form-control" ngModel/>
+        </div>
+
+        <div [hidden] = "!postError"
+             class="alert alert-danger">
+             {{postErrorMessage}}
         </div>
 
         <button class="btn btn-primary">Send</button>

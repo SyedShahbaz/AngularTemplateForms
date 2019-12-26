@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSettings } from '../data/user-settings';
 import { NgForm, NgModel } from '@angular/forms';
+import { DataService } from '../data/data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-settings-forms',
@@ -8,6 +10,11 @@ import { NgForm, NgModel } from '@angular/forms';
   styleUrls: ['./user-settings-forms.component.css']
 })
 export class UserSettingsFormsComponent implements OnInit {
+
+  postError = false;
+  postErrorMessage = '';
+
+  subscriptionTypes: Observable<string[]>;
 
   // We want to populate the form with this data model. we want to update the model and form if any one changes
   // for that we are using two way data binding.. make sure to use the name attribute to the field inthe form
@@ -23,13 +30,30 @@ export class UserSettingsFormsComponent implements OnInit {
   // Copy is always good to work on, when user saves or discard the forms input then only update the original object.
   // else we will get the updated values even if user discards the forms input and decides otherwise.
   userSettings: UserSettings = {...this.originalUserSettings};
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
+    this.subscriptionTypes = this.dataService.getSubscriptionTypes();
   }
 
+  onHttpError(errorResponse: any) {
+    console.log('Error: ', errorResponse);
+    this.postError = true;
+    this.postErrorMessage = 'BackEnd error';
+  }
+
+  // https://putsreq.com/VpfOoFdWMezuOCVHdodB/inspect
   onSubmit(form: NgForm) {
     console.log('in onSubmit: ', form.valid);
+    if (form.valid) {
+      this.dataService.postUserSettingsForms(this.userSettings).subscribe(
+        result => console.log('Success ', result),
+        error => this.onHttpError(error)
+      );
+    } else {
+      this.postError = true;
+      this.postErrorMessage = 'Fix above errors';
+    }
   }
 
   onBlur(field: NgModel) {

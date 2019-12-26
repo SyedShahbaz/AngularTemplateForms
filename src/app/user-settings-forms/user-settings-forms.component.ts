@@ -11,8 +11,11 @@ import { Observable } from 'rxjs';
 })
 export class UserSettingsFormsComponent implements OnInit {
 
+  startDate: Date;
   postError = false;
   postErrorMessage = '';
+
+  singleModel = 'On';
 
   subscriptionTypes: Observable<string[]>;
 
@@ -34,6 +37,7 @@ export class UserSettingsFormsComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptionTypes = this.dataService.getSubscriptionTypes();
+    this.startDate = new Date();
   }
 
   onHttpError(errorResponse: any) {

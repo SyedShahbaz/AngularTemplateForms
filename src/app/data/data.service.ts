@@ -11,7 +11,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getSubscriptionTypes(): Observable<string[]> {
-    return of(['Monthly', 'Annual', 'Lifetime']);
+    return of(['Monthly', 'Annual', 'Lifetime', 'After Death']);
   }
   postUserSettingsForms(userSettings: UserSettings): Observable<any> {
     // Sending data to server and waiting for the response is a Async operation.

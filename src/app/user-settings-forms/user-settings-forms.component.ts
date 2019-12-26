@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSettings } from '../data/user-settings';
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-user-settings-forms',
@@ -12,11 +13,11 @@ export class UserSettingsFormsComponent implements OnInit {
   // for that we are using two way data binding.. make sure to use the name attribute to the field inthe form
   // that crosspondes to the UserSettings field. use <input type='text' name=name [(ngModel)] = usersettings.name.
   originalUserSettings: UserSettings = {
-    name: 'Syed',
-    emailOffers: true,
-    interfaceStyle: 'dark',
-    subscriptionType: 'Annual',
-    notes: 'Some notes...'
+    name: null,
+    emailOffers: null,
+    interfaceStyle: null,
+    subscriptionType: null,
+    notes: null
   };
 
   // Copy is always good to work on, when user saves or discard the forms input then only update the original object.
@@ -27,4 +28,11 @@ export class UserSettingsFormsComponent implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit(form: NgForm) {
+    console.log('in onSubmit: ', form.valid);
+  }
+
+  onBlur(field: NgModel) {
+    console.log('in onBlur: ', field.valid);
+  }
 }
